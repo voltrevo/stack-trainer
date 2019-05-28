@@ -62,12 +62,15 @@ void run() {
           break;
 
           case SDLK_DOWN:
+            board.down();
           break;
 
           case SDLK_LEFT:
+            board.moveX(-1);
           break;
 
           case SDLK_RIGHT:
+            board.moveX(1);
           break;
 
           case SDLK_ESCAPE:
