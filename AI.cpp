@@ -111,7 +111,7 @@ bool findAndLock(Board& board) {
         lockBoard.piece = piece;
         lockBoard.piecePos = state.pos;
         lockBoard.lockPiece();
-        double heuristic = Heuristic(lockBoard.field);
+        double heuristic = lockBoard.score + Heuristic(lockBoard.field);
 
         if (heuristic > bestHeuristic) {
           bestHeuristic = heuristic;

@@ -1,6 +1,9 @@
 #include "AI.hpp"
 
 #include <iostream>
+#include <limits>
+
+const double infinity = std::numeric_limits<double>::infinity();
 
 void print(const Board& board) {
   const char* hLine = "------------";
@@ -22,19 +25,35 @@ void print(const Board& board) {
 }
 
 int main() {
-  Board board(0);
-  print(board);
+  double best = -infinity;
+  double worst = infinity;
+  double sum = 0;
 
-  int count = 0;
+  for (int seed = 1; seed <= 100; seed++) {
+    Board board(seed);
 
-  while (!board.gameOver) {
-    findAndLock(board);
-    count++;
-    print(board);
+    while (!board.gameOver) {
+      findAndLock(board);
+    }
+
+    if (board.score > best) {
+      best = board.score;
+    }
+
+    if (board.score < worst) {
+      worst = board.score;
+    }
+
+    sum += board.score;
   }
 
-  std::cout << "Score: " << board.score << " (" << (int)(board.score * 25670) << ")" << std::endl;
-  std::cout << "Score/line: " << board.score / board.linesCleared << std::endl;
+  auto printScore = [&](const char* desc, double score) {
+    std::cout << desc << ' ' << score << " (" << (int)(score * 25670) << ")" << std::endl;
+  };
+
+  printScore("Best ", best);
+  printScore("Worst", worst);
+  printScore("Avg  ", sum / 100);
 
   return 0;
 }
