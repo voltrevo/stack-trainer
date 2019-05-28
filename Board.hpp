@@ -7,27 +7,35 @@
 
 extern const unsigned short leftSide;
 extern const unsigned short fullLine;
+extern const unsigned short emptyLine;
 
 struct Board {
-  unsigned short field[22];
+  unsigned short field[23];
 
   Piece piece;
   Pos piecePos;
 
   Piece nextPiece;
 
+  int linesCleared;
   int score;
 
   bool gameOver;
   std::minstd_rand rng;
 
   Board(unsigned seed):
-    field{},
     rng(seed)
   {
+    for (int i = 0; i < 22; i++) {
+      field[i] = emptyLine;
+    }
+
+    field[22] = fullLine;
+
     piece = UniformPiece();
     piecePos = {5, 2};
     nextPiece = NextPiece();
+    linesCleared = 0;
     score = 0;
     gameOver = false;
   }
@@ -73,6 +81,8 @@ struct Board {
           iHigh--;
         }
       }
+
+      linesCleared += iLow - iHigh;
 
       while (iHigh < iLow) {
         field[iLow] = 0;
@@ -137,13 +147,15 @@ struct Board {
     return (fieldLine & blockLine) == 0;
   }
 
-  bool checkPiece() {
-    auto& blocks = piece.Blocks();
+  bool checkPiece() { return checkPiece(piece, piecePos); }
+
+  bool checkPiece(const Piece& p, const Pos& pos) {
+    auto& blocks = p.Blocks();
 
     for (int i = 0; i < 4; i++) {
       Pos blockPos = {
-        piecePos.x + blocks[i].x,
-        piecePos.y + blocks[i].y,
+        pos.x + blocks[i].x,
+        pos.y + blocks[i].y,
       };
 
       if (!checkPos(blockPos)) {
