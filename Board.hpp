@@ -99,7 +99,7 @@ struct Board {
 
   bool checkPos(const Pos& pos) {
     if (
-      (pos.y < 0 || pos.y >= 20) ||
+      (pos.y < 0 || pos.y >= 22) ||
       (pos.x < 0 || pos.x >= 10)
     ) {
       return false;
