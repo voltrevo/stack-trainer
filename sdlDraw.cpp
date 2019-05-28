@@ -30,4 +30,9 @@ void sdlDraw(SDL_Window* window, const Board& board) {
   block(screen, 4, 4);
   block(screen, 5, 4);
   block(screen, 4, 5);
+
+  rect(screen, field.x + field.w + 2 * 8, field.y + 8 * 8, 4 * 8, 4 * 8, 0, 0, 0);
+
+  block(screen, 12, 8);
+  block(screen, 15, 11);
 }
