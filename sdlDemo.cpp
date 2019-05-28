@@ -1,9 +1,13 @@
+#include "Board.hpp"
+#include "sdlDraw.hpp"
+
 #include <SDL.h>
 
 #include <iostream>
+#include <string>
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 256;
+const int SCREEN_HEIGHT = 224;
 
 bool init();
 void close();
@@ -43,6 +47,7 @@ void close() {
 }
 
 void run() {
+  Board board(0);
   SDL_Event e;
 
   while (true) {
@@ -65,13 +70,17 @@ void run() {
           case SDLK_RIGHT:
           break;
 
+          case SDLK_ESCAPE:
+            return;
+          break;
+
           default:
           break;
         }
       }
     }
 
-    // SDL_BlitSurface(gCurrentSurface, NULL, gScreenSurface, NULL);
+    sdlDraw(gWindow, board);
 
     SDL_UpdateWindowSurface(gWindow);
   }
@@ -82,6 +91,10 @@ int main(int argc, char* args[]) {
     std::cout << "Failed to initialize!" << std::endl;
     close();
     return 1;
+  }
+
+  if (argc >= 2 && std::string(args[1]) == "--fullscreen") {
+    SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN);
   }
 
   run();

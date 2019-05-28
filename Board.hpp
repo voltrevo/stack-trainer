@@ -5,7 +5,7 @@
 
 #include <random>
 
-short leftSide = 1 << 15;
+extern const short leftSide;
 
 struct Board {
   short field[22];
