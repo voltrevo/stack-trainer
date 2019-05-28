@@ -48,6 +48,9 @@ void close() {
 
 void run() {
   Board board(0);
+  int gravity = 5;
+  int gravityProgress = 0;
+  auto lastFrame = SDL_GetTicks();
   SDL_Event e;
 
   while (true) {
@@ -88,6 +91,19 @@ void run() {
           default:
           break;
         }
+      }
+    }
+
+    auto time = SDL_GetTicks();
+
+    if (time - lastFrame >= 17) {
+      lastFrame = time;
+
+      gravityProgress++;
+
+      if (gravityProgress >= gravity) {
+        board.down();
+        gravityProgress = 0;
       }
     }
 
