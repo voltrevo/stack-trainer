@@ -25,7 +25,7 @@ struct Board {
     rng(seed)
   {
     piece = UniformPiece();
-    piecePos = {8, 2};
+    piecePos = {5, 2};
     nextPiece = NextPiece();
     score = 0;
     gameOver = false;

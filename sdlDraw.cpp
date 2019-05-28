@@ -1,4 +1,8 @@
+#include "Board.hpp"
 #include "sdlDraw.hpp"
+
+// TODO: Why is this needed and not found in Board.cpp?
+const short leftSide = 1 << 15;
 
 SDL_Rect field = {95, 39, 81, 162};
 
@@ -20,19 +24,33 @@ void sdlDraw(SDL_Window* window, const Board& board) {
 
   clear(screen);
 
+  // Field
   rect(screen, field.x, field.y, field.w, field.h, 0, 0, 0);
 
+  // Preview area
+  rect(screen, field.x + field.w + 2 * 8, field.y + 8 * 8, 5 * 8, 5 * 8, 0, 0, 0);
 
-  block(screen, 0, 0);
-  block(screen, 9, 19);
+  for (int x = 0; x < 10; x++) {
+    for (int y = 0; y < 20; y++) {
+      if ((board.field[y + 2] & (leftSide >> x)) != 0) {
+        block(screen, x, y);
+      }
+    }
+  }
 
-  block(screen, 3, 4);
-  block(screen, 4, 4);
-  block(screen, 5, 4);
-  block(screen, 4, 5);
+  {
+    auto& blocks = board.piece.Blocks();
 
-  rect(screen, field.x + field.w + 2 * 8, field.y + 8 * 8, 4 * 8, 4 * 8, 0, 0, 0);
+    for (int i = 0; i < 4; i++) {
+      block(screen, board.piecePos.x + blocks[i].x, board.piecePos.y + blocks[i].y - 2);
+    }
+  }
 
-  block(screen, 12, 8);
-  block(screen, 15, 11);
+  {
+    auto& blocks = board.nextPiece.Blocks();
+
+    for (int i = 0; i < 4; i++) {
+      block(screen, 14 + blocks[i].x, 10 + blocks[i].y);
+    }
+  }
 }

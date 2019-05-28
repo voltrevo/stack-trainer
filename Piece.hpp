@@ -10,7 +10,7 @@ struct Piece {
   OrientedPiece* data;
 
   void rotate(char diff) { i = (i + iMax + diff) % iMax; }
-  OrientedPiece& Blocks() { return data[i]; }
+  const OrientedPiece& Blocks() const { return data[i]; }
 };
 
 extern Piece pieces[7];
