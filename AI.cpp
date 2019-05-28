@@ -1,9 +1,20 @@
 #include "AI.hpp"
 
+#include <array>
 #include <limits>
 #include <vector>
 
 const double infinity = std::numeric_limits<double>::infinity();
+
+int Height(const unsigned short (&field)[23]) {
+  for (int i = 3; i < 22; i++) {
+    if (field[i] != emptyLine) {
+      return 23 - i;
+    }
+  }
+
+  return 0;
+}
 
 int RoofCount(const unsigned short (&field)[23]) {
   int count = 0;
@@ -25,8 +36,18 @@ int RoofCount(const unsigned short (&field)[23]) {
   return count;
 }
 
+std::array<double, 2> Features(const unsigned short (&field)[23]) {
+  std::array<double, 2> res;
+
+  res[0] = RoofCount(field);
+  res[1] = Height(field);
+
+  return res;
+}
+
 double Heuristic(const unsigned short (&field)[23]) {
-  return -RoofCount(field);
+  auto features = Features(field);
+  return -(features[0] + features[1]);
 }
 
 bool findAndLock(Board& board) {

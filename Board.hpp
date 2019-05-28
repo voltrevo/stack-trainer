@@ -18,7 +18,7 @@ struct Board {
   Piece nextPiece;
 
   int linesCleared;
-  int score;
+  double score;
 
   bool gameOver;
   std::minstd_rand rng;
@@ -82,7 +82,17 @@ struct Board {
         }
       }
 
-      linesCleared += iLow - iHigh;
+      int lines = iLow - iHigh;
+      linesCleared += lines;
+
+      // Full 4 lines cleared is 1.0, triple is only 0.25
+      score += (
+        lines == 0 ?  0 :
+        lines == 1 ?  1 :
+        lines == 2 ?  2 :
+        lines == 3 ?  6 :
+                     24
+      ) / 24.0;
 
       while (iHigh < iLow) {
         field[iLow] = 0;

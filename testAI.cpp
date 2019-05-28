@@ -25,8 +25,16 @@ int main() {
   Board board(0);
   print(board);
 
-  for (int i = 0; i < 20; i++) {
+  int count = 0;
+
+  while (!board.gameOver) {
     findAndLock(board);
+    count++;
     print(board);
   }
+
+  std::cout << "Score: " << board.score << " (" << (int)(board.score * 25670) << ")" << std::endl;
+  std::cout << "Score/line: " << board.score / board.linesCleared << std::endl;
+
+  return 0;
 }
