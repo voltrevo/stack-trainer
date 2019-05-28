@@ -5,9 +5,9 @@
 
 #include <random>
 
-extern const unsigned short leftSide;
-extern const unsigned short fullLine;
-extern const unsigned short emptyLine;
+const unsigned short leftSide  = 1 << 12;
+const unsigned short fullLine  = 0b1111111111111111;
+const unsigned short emptyLine = 0b1110000000000111;
 
 struct Board {
   unsigned short field[23];
