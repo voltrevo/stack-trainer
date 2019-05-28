@@ -1,12 +1,9 @@
 #pragma once
 
-struct Coord {
-  char x;
-  char y;
-};
+#include "Pos.hpp"
 
 struct OrientedPiece {
-  Coord coords[4];
+  Pos blocks[4];
 };
 
 struct Piece {
@@ -14,9 +11,8 @@ struct Piece {
   char iMax;
   Orientation* data;
 
-  void rotateCW() { i = (i + 1) % iMax; }
-  void rotateCCW() { i = (i + 3) % iMax; }
-  OrientedPiece& Coords() { return data[i]; }
+  void rotate(char diff) { i = (i + iMax + diff) % iMax; }
+  OrientedPiece& Blocks() { return data[i]; }
 };
 
 extern Piece pieces[7];
