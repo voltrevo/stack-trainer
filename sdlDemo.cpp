@@ -50,6 +50,9 @@ void run() {
   Board board(0);
   int gravity = 5;
   int gravityProgress = 0;
+  int direction = 0;
+  int das = 6;
+  int dasProgress = 0;
   auto lastFrame = SDL_GetTicks();
   SDL_Event e;
 
@@ -59,7 +62,7 @@ void run() {
         return;
       }
 
-      if (e.type == SDL_KEYDOWN) {
+      if (e.type == SDL_KEYDOWN && !e.key.repeat) {
         switch(e.key.keysym.sym) {
           case SDLK_w:
           break;
@@ -69,10 +72,14 @@ void run() {
           break;
 
           case SDLK_a:
+            direction = -1;
+            dasProgress = 0;
             board.moveX(-1);
           break;
 
           case SDLK_d:
+            direction = 1;
+            dasProgress = 0;
             board.moveX(1);
           break;
 
@@ -92,6 +99,16 @@ void run() {
           break;
         }
       }
+
+      if (e.type == SDL_KEYUP) {
+        switch(e.key.keysym.sym) {
+          case SDLK_a:
+          case SDLK_d:
+            direction = 0;
+            dasProgress = 0;
+          break;
+        }
+      }
     }
 
     auto time = SDL_GetTicks();
@@ -104,6 +121,13 @@ void run() {
       if (gravityProgress >= gravity) {
         board.down();
         gravityProgress = 0;
+      }
+
+      dasProgress++;
+
+      if (dasProgress >= das) {
+        board.moveX(direction);
+        dasProgress = 0;
       }
     }
 
