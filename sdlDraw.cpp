@@ -2,7 +2,7 @@
 #include "sdlDraw.hpp"
 
 // TODO: Why is this needed and not found in Board.cpp?
-const short leftSide = 1 << 15;
+const unsigned short leftSide = 1 << 15;
 
 SDL_Rect field = {95, 39, 81, 162};
 

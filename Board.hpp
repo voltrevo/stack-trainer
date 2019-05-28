@@ -5,10 +5,10 @@
 
 #include <random>
 
-extern const short leftSide;
+extern const unsigned short leftSide;
 
 struct Board {
-  short field[22];
+  unsigned short field[22];
 
   Piece piece;
   Pos piecePos;
@@ -55,7 +55,7 @@ struct Board {
     }
 
     piece = nextPiece;
-    piecePos = {8, 2};
+    piecePos = {5, 2};
     nextPiece = NextPiece();
 
     if (!checkPiece()) {
@@ -105,8 +105,8 @@ struct Board {
       return false;
     }
 
-    short fieldLine = field[pos.y];
-    short blockLine = leftSide >> pos.x;
+    unsigned short fieldLine = field[pos.y];
+    unsigned short blockLine = leftSide >> pos.x;
 
     return (fieldLine & blockLine) == 0;
   }

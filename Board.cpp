@@ -1,1 +1,1 @@
-const short leftSide = 1 << 15;
+const unsigned short leftSide = 1 << 15;
