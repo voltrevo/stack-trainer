@@ -58,19 +58,27 @@ void run() {
 
       if (e.type == SDL_KEYDOWN) {
         switch(e.key.keysym.sym) {
-          case SDLK_UP:
+          case SDLK_w:
           break;
 
-          case SDLK_DOWN:
+          case SDLK_s:
             board.down();
           break;
 
-          case SDLK_LEFT:
+          case SDLK_a:
             board.moveX(-1);
           break;
 
-          case SDLK_RIGHT:
+          case SDLK_d:
             board.moveX(1);
+          break;
+
+          case SDLK_LEFTBRACKET:
+            board.rotate(-1);
+          break;
+
+          case SDLK_RIGHTBRACKET:
+            board.rotate(1);
           break;
 
           case SDLK_ESCAPE:

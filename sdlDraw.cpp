@@ -1,8 +1,9 @@
 #include "Board.hpp"
 #include "sdlDraw.hpp"
 
-// TODO: Why is this needed and not found in Board.cpp?
+// TODO: Why are these needed and not found in Board.cpp?
 const unsigned short leftSide = 1 << 15;
+const unsigned short fullLine = 0b1111111111000000;
 
 SDL_Rect field = {95, 39, 81, 162};
 

@@ -6,6 +6,7 @@
 #include <random>
 
 extern const unsigned short leftSide;
+extern const unsigned short fullLine;
 
 struct Board {
   unsigned short field[22];
@@ -49,9 +50,34 @@ struct Board {
 
   void lockPiece() {
     auto& blocks = piece.Blocks();
+    bool clear = false;
 
     for (int i = 0; i < 4; i++) {
-      field[piecePos.y + blocks[i].y] |= leftSide >> (piecePos.x + blocks[i].x);
+      auto& line = field[piecePos.y + blocks[i].y];
+      line |= leftSide >> (piecePos.x + blocks[i].x);
+      clear |= line == fullLine;
+    }
+
+    if (clear) {
+      // Here 'high' means high on the screen, which is a lower number
+
+      int iHigh = 21;
+      int iLow = 21;
+
+      while (iHigh >= 2) {
+        if (field[iHigh] == fullLine) {
+          iHigh--;
+        } else {
+          field[iLow] = field[iHigh];
+          iLow--;
+          iHigh--;
+        }
+      }
+
+      while (iHigh < iLow) {
+        field[iLow] = 0;
+        iLow--;
+      }
     }
 
     piece = nextPiece;
