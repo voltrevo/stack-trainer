@@ -2,5 +2,9 @@
 
 #include "Board.hpp"
 
-bool findAndLock(Board& board);
-double Heuristic(const unsigned short (&field)[23]);
+#include <array>
+
+using AIVec = std::array<double, 2>;
+
+bool findAndLock(const AIVec& weights, Board& board);
+double Heuristic(const AIVec& weights, const unsigned short (&field)[23]);

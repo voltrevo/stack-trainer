@@ -1,6 +1,5 @@
 #include "AI.hpp"
 
-#include <array>
 #include <limits>
 #include <vector>
 
@@ -36,8 +35,8 @@ int RoofCount(const unsigned short (&field)[23]) {
   return count;
 }
 
-std::array<double, 2> Features(const unsigned short (&field)[23]) {
-  std::array<double, 2> res;
+AIVec Features(const unsigned short (&field)[23]) {
+  AIVec res;
 
   res[0] = RoofCount(field);
   res[1] = Height(field);
@@ -45,12 +44,18 @@ std::array<double, 2> Features(const unsigned short (&field)[23]) {
   return res;
 }
 
-double Heuristic(const unsigned short (&field)[23]) {
-  auto features = Features(field);
-  return -(features[0] + features[1]);
+double Heuristic(const AIVec& weights, const unsigned short (&field)[23]) {
+  double sum = 0;
+  AIVec features = Features(field);
+
+  for (int i = 0; i < weights.size(); i++) {
+    sum += weights[i] * features[i];
+  }
+
+  return sum;
 }
 
-bool findAndLock(Board& board) {
+bool findAndLock(const AIVec& weights, Board& board) {
   bool stateFlags[20][10][4] = {};
 
   struct State {
@@ -111,7 +116,7 @@ bool findAndLock(Board& board) {
         lockBoard.piece = piece;
         lockBoard.piecePos = state.pos;
         lockBoard.lockPiece();
-        double heuristic = lockBoard.score + Heuristic(lockBoard.field);
+        double heuristic = lockBoard.score + Heuristic(weights, lockBoard.field);
 
         if (heuristic > bestHeuristic) {
           bestHeuristic = heuristic;

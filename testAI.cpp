@@ -1,5 +1,6 @@
 #include "AI.hpp"
 
+#include <cmath>
 #include <iostream>
 #include <limits>
 
@@ -20,40 +21,33 @@ void print(const Board& board) {
     std::cout << '|' << std::endl;
   }
 
-  std::cout << hLine << std::endl;
-  std::cout << Heuristic(board.field) << std::endl << std::endl;
+  std::cout << hLine << std::endl << std::endl;
 }
 
-int main() {
-  double best = -infinity;
-  double worst = infinity;
+double measure(const AIVec& weights) {
   double sum = 0;
 
   for (int seed = 1; seed <= 100; seed++) {
     Board board(seed);
 
     while (!board.gameOver) {
-      findAndLock(board);
-    }
-
-    if (board.score > best) {
-      best = board.score;
-    }
-
-    if (board.score < worst) {
-      worst = board.score;
+      findAndLock(weights, board);
     }
 
     sum += board.score;
   }
 
-  auto printScore = [&](const char* desc, double score) {
-    std::cout << desc << ' ' << score << " (" << (int)(score * 25670) << ")" << std::endl;
-  };
+  return sum / 100;
+}
 
-  printScore("Best ", best);
-  printScore("Worst", worst);
-  printScore("Avg  ", sum / 100);
+int main() {
+  AIVec weights = {-1, -1};
+
+  for (int i = 0; i < 30; i++) {
+    std::cout << weights[1] << ": " << measure(weights) << std::endl;
+
+    weights[1] *= std::exp(-0.2);
+  }
 
   return 0;
 }
