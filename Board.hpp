@@ -99,14 +99,14 @@ struct Board {
 
   bool checkPos(const Pos& pos) {
     if (
-      (blockPos.y < 0 || blockPos.y >= 20) ||
-      (blockPos.x < 0 || blockPos.x >= 10)
+      (pos.y < 0 || pos.y >= 20) ||
+      (pos.x < 0 || pos.x >= 10)
     ) {
       return false;
     }
 
-    short fieldLine = field[pos.y + blocks[i].y];
-    short blockLine = leftSide >> (pos.x + blocks[i].x);
+    short fieldLine = field[pos.y];
+    short blockLine = leftSide >> pos.x;
 
     return (fieldLine & blockLine) == 0;
   }
